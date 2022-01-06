@@ -3,24 +3,9 @@ import PrimaryButton from "../modules/common/Input/PrimaryButton.component";
 import CenteredContainer from "../modules/common/Layout/CenteredContainer.component";
 import Heading from "../modules/common/Typography/Heading.component";
 import GameContainer from "../modules/game/GameContainer.component";
-import questions from "../data";
 import Cloud from "../modules/game/cloud/Cloud.component";
-
-const getRandomQuestion = () => {
-  return questions[~~(questions.length * Math.random())];
-};
-
-const calculatePoints = (selectedWords: string[], correctWords: string[]) => {
-  let goodAnswers = 0;
-  let badAnswers = 0;
-
-  selectedWords.forEach((word) =>
-    correctWords.includes(word) ? goodAnswers++ : badAnswers++
-  );
-  const missedGoodAnswers = correctWords.length - goodAnswers;
-
-  return goodAnswers * 2 - badAnswers - missedGoodAnswers;
-};
+import calculateScore from "../helpers/calculateScore";
+import getRandomQuestion from "../helpers/getRandomQuestion";
 
 interface IGameViewProps {
   setPoints: (points: number) => void;
@@ -39,7 +24,7 @@ const GameView: React.FC<IGameViewProps> = ({ setPoints }) => {
     }
 
     if (isValidated) {
-      const gameScore = calculatePoints(selectedWords, goodWords);
+      const gameScore = calculateScore(selectedWords, goodWords);
       setPoints(gameScore);
     }
   };
