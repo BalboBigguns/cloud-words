@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import EndView from "./views/End.view";
+import GameView from "./views/Game.view";
+import LoginView from "./views/Login.view";
+import { ThemeProvider } from "styled-components";
+import theme from "./style/theme";
+import GlobalStyle from "./style/global";
 
-function App() {
+const App: React.FC = () => {
+  const [userName, setUserName] = useState("");
+  const [points, setPoints] = useState<number | null>(null);
+  const resetGame = () => {
+    setUserName("");
+    setPoints(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle/>
+      {!userName && points === null && <LoginView setUserName={setUserName}/>}
+      {userName && points === null && <GameView setPoints={setPoints}/>}
+      {userName && points !== null && <EndView resetGame={resetGame} name={userName} points={points}/>}
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
